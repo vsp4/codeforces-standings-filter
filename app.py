@@ -77,7 +77,9 @@ def get_standings_contents(contest_id):
             "rank": res["rank"],
             "handle": handle,
             "points": res["points"],
-            "country": userdata[handle]["country"]
+            "country": userdata[handle]["country"],
+            "city": userdata[handle]["city"],
+            "organization": userdata[handle]["organization"]
         }
 
         '''
