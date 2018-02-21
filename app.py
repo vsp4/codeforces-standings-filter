@@ -32,9 +32,11 @@ def get_user_data(userhandles, count):
         else:
             #bad user, user handle change problem
             if (len(currhandles) == 1):
-                userdata[currhandles[0]] = {"country": 'N/A',
-                                            "city": 'N/A',
-                                            "organization": 'N/A'};
+                userdata[currhandles[0]] = {
+                    "country": 'N/A',
+                    "city": 'N/A',
+                    "organization": 'N/A'
+                };
         
 @app.route('/')
 def index():
@@ -42,7 +44,7 @@ def index():
 
 @app.route('/standings/<int:contest_id>', methods=['GET'])
 def get_standings_contents(contest_id):
-    response = requests.get('http://codeforces.com/api/contest.standings?from=1&count=2000&contestId=%s&showUnofficial=false' % contest_id)
+    response = requests.get('http://codeforces.com/api/contest.standings?from=1&count=20000&contestId=%s&showUnofficial=false' % contest_id)
     response = response.json()
     result = response["result"]
 
@@ -58,9 +60,23 @@ def get_standings_contents(contest_id):
     get_user_data(userhandles, 7)
     get_user_data(userhandles, 1)
 
-    print(list(userdata.keys()))
+    standings = []
+
+    for res in result["rows"]:
+        handle = res["party"]["members"][0]["handle"]
+
+        data = {
+            "rank": res["rank"],
+            "points": res["points"],
+            "handle": handle,
+            "country": userdata[handle]["country"]
+        }
+
+        if (data["country"] == "India"):
+            #temp filter
+            standings.append(data)
     
-    return jsonify(result)
+    return jsonify(standings)
 
 if __name__ == '__main__':
     app.run(debug=True)
