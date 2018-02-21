@@ -1,0 +1,74 @@
+<!DOC
+<html>
+	<head>
+        <title>Standings</title>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0/css/bootstrap.css">
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css">
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.10.16/css/dataTables.bootstrap4.min.css">
+
+    </head>
+
+	<body>
+		<div class="container">
+            <table data-page-length='200' id="standings" class="table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Handle</th>
+                        <th>Points</th>
+                        <th>Country</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Handle</th>
+                        <th>Points</th>
+                        <th>Country</th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    {% for data in standings %}
+                        <tr>
+                            <th>{{data.rank}}</th>
+                            <th>{{data.handle}}</th>
+                            <th>{{data.points}}</th>
+                            <th>{{data.country}}</th>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+		</div>
+    </body>
+
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
+    
+    <script>
+        $(document).ready(function() {
+            $('#standings').DataTable( {
+                initComplete: function () {
+                    this.api().columns().every( function () {
+                        var column = this;
+                        var select = $('<select><option value=""></option></select>')
+                            .appendTo( $(column.footer()).empty() )
+                            .on( 'change', function () {
+                                var val = $.fn.dataTable.util.escapeRegex(
+                                    $(this).val()
+                                );
+        
+                                column
+                                    .search( val ? '^'+val+'$' : '', true, false )
+                                    .draw();
+                            } );
+        
+                        column.data().unique().sort().each( function ( d, j ) {
+                            select.append( '<option value="'+d+'">'+d+'</option>' )
+                        } );
+                    } );
+                },
+                "lengthMenu": [[10, 25, 50, 100, 200, -1], [10, 25, 50, 100, 200, "All"]]
+            } );
+        } );
+    </script>
+</html>

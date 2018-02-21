@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, render_template
 import requests
 import json
 import shelve
@@ -9,6 +9,8 @@ userdata = shelve.open("userdata")
 
 def get_user_data(userhandles, count):
     userhandles = userhandles[:]
+
+    anyerror = 0
 
     while (len(userhandles) >= 1):
         currhandles = []
@@ -30,6 +32,9 @@ def get_user_data(userhandles, count):
                                             "city": user.get("city", 'N/A') or 'N/A',
                                             "organization": user.get("organization", 'N/A') or 'N/A'};
         else:
+            if (len(currhandles) >= 1):
+                anyerror = 1
+
             #bad user, user handle change problem
             if (len(currhandles) == 1):
                 userdata[currhandles[0]] = {
@@ -37,6 +42,8 @@ def get_user_data(userhandles, count):
                     "city": 'N/A',
                     "organization": 'N/A'
                 };
+
+    return anyerror
         
 @app.route('/')
 def index():
@@ -54,11 +61,12 @@ def get_standings_contents(contest_id):
         for member in res["party"]["members"]:
             userhandles.append(member["handle"])
 
-    #best constants
-    get_user_data(userhandles, 343)
-    get_user_data(userhandles, 49)
-    get_user_data(userhandles, 7)
-    get_user_data(userhandles, 1)
+    #best constant
+    count = 512
+    while (count >= 1):
+        if (get_user_data(userhandles, count) == 0):
+            break
+        count = count // 2
 
     standings = []
 
@@ -67,16 +75,20 @@ def get_standings_contents(contest_id):
 
         data = {
             "rank": res["rank"],
-            "points": res["points"],
             "handle": handle,
+            "points": res["points"],
             "country": userdata[handle]["country"]
         }
 
+        '''
         if (data["country"] == "India"):
             #temp filter
             standings.append(data)
+        '''
+        
+        standings.append(data)
     
-    return jsonify(standings)
+    return render_template("standings.html", standings = standings)
 
 if __name__ == '__main__':
     app.run(debug=True)
