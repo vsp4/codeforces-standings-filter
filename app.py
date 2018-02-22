@@ -79,7 +79,10 @@ def get_standings_contents(contest_id):
             "points": res["points"],
             "country": userdata[handle]["country"],
             "city": userdata[handle]["city"],
-            "organization": userdata[handle]["organization"]
+            "organization": userdata[handle]["organization"],
+            "problemResults": res["problemResults"],
+            "successfulHackCount": res["successfulHackCount"],
+            "unsuccessfulHackCount": res["unsuccessfulHackCount"]
         }
 
         '''
@@ -90,7 +93,7 @@ def get_standings_contents(contest_id):
         
         standings.append(data)
     
-    return render_template("standings.html", standings = standings)
+    return render_template("standings.html", standings = standings, problems = result["problems"])
 
 if __name__ == '__main__':
     app.run(debug=True)
