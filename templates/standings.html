@@ -18,27 +18,27 @@
 		<div class="container">
             <br />
             
-            <div class="row">
+            <div class="row" style="margin: 10px;">
                 <span>
                     <label>Country</label>
                 </span>
-                <span style="margin-left:auto; margin-right:0" id="filterCountry">
-                </span>
-            </div>
-
-            <div class="row">
-                <span>
-                    <label>City</label>
-                </span>
-                <span style="margin-left:auto; margin-right:0" id="filterCity">
+                <span style="margin-left:auto; margin-right:0" class="col-sm-8" id="filterCountry">
                 </span>
             </div>
             
-            <div class="row">
+            <div class="row" style="margin: 10px;">
+                <span>
+                    <label>City</label>
+                </span>
+                <span style="margin-left:auto; margin-right:0" class="col-sm-8" id="filterCity">
+                </span>
+            </div>
+            
+            <div class="row" style="margin: 10px;">
                 <span>
                     <label>Organization</label>
                 </span>
-                <span style="margin-left:auto; margin-right:0" id="filterOrganization">
+                <span style="margin-left:auto; margin-right:0" class="col-sm-8" id="filterOrganization">
                 </span>
             </div>
 
@@ -90,7 +90,7 @@
                 initComplete: function () {
                     this.api().columns().every( function () {
                         var column = this;
-                        var select = $('<select><option value=""></option></select>')
+                        var select = $('<select class="form-control"><option value=""></option></select>')
                             .appendTo( $($(column.header()).attr("data-filter")) )
                             .on( 'change', function () {
                                 var val = $.fn.dataTable.util.escapeRegex(
