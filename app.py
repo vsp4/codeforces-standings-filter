@@ -51,7 +51,7 @@ def index():
 
 @app.route('/standings/<int:contest_id>', methods=['GET'])
 def get_standings_contents(contest_id):
-    response = requests.get('http://codeforces.com/api/contest.standings?from=1&count=20&contestId=%s&showUnofficial=false' % contest_id)
+    response = requests.get('http://codeforces.com/api/contest.standings?from=1&count=20000&contestId=%s&showUnofficial=false' % contest_id)
     response = response.json()
     result = response["result"]
 
