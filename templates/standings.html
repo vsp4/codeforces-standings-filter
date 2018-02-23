@@ -68,7 +68,7 @@
                     {% for data in standings %}
                         <tr>
                             <th>{{data.rank}}</th>
-                            <th>{{data.handle}}</th>
+                            <th class="{{data.ratingcolor}}">{{data.handle}}</th>
                             <th>{{data.points|int}}</th>
                             <th data-order="{{data.successfulHackCount|int}}">
                                 <span style="color:green">
