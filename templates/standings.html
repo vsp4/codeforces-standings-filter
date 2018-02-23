@@ -10,6 +10,58 @@
                 table-layout: fixed;
                 width: 100%
             }
+
+            .user {
+                display: block;
+            }
+
+            .user-black {
+                color: black !important;
+            }
+
+            .user-legendary::first-letter {
+                color: black !important;
+            }
+
+            .user-legendary {
+                color: red !important;
+            }
+
+            .user-red {
+                color: red !important;
+            }
+
+            .user-fire {
+                color: red !important;
+            }
+
+            .user-yellow {
+                color: #bb0 !important;
+            }
+
+            .user-violet {
+                color: #a0a !important;
+            }
+
+            .user-orange {
+                color: #FF8C00 !important;
+            }
+
+            .user-blue {
+                color: blue !important;
+            }
+
+            .user-cyan {
+                color: #03A89E !important;
+            }
+
+            .user-green {
+                color: green !important;
+            }
+
+            .user-gray {
+                color: gray !important;
+            }
         </style>
     </head>
 
@@ -68,7 +120,7 @@
                     {% for data in standings %}
                         <tr>
                             <th>{{data.rank}}</th>
-                            <th class="{{data.ratingcolor}}">{{data.handle}}</th>
+                            <th><a class="{{data.ratingcss}}" href="http://codeforces.com/profile/{{data.handle}}">{{data.handle}}</a></th>
                             <th>{{data.points|int}}</th>
                             <th data-order="{{data.successfulHackCount|int}}">
                                 <span style="color:green">

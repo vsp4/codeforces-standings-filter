@@ -7,6 +7,26 @@ app = Flask(__name__)
 
 userdata = shelve.open("userdata")
 
+def getcolor(rating):
+    if (rating >= 2900):
+        return "legendary"
+    elif (rating >= 2400):
+        return "red"
+    elif (rating >= 2200):
+        return "orange"
+    elif (rating >= 1900):
+        return "violet"
+    elif (rating >= 1600):
+        return "blue"
+    elif (rating >= 1400):
+        return "cyan"
+    elif (rating >= 1200):
+        return "green"
+    elif (rating >= 0):
+        return "gray"
+    else:
+        return "black"
+
 def get_user_data(userhandles, count):
     userhandles = userhandles[:]
 
@@ -30,7 +50,8 @@ def get_user_data(userhandles, count):
             for user in response["result"]:
                 userdata[user["handle"]] = {"country": user.get("country", 'N/A') or 'N/A',
                                             "city": user.get("city", 'N/A') or 'N/A',
-                                            "organization": user.get("organization", 'N/A') or 'N/A'};
+                                            "organization": user.get("organization", 'N/A') or 'N/A',
+                                            "rating": user["rating"]};
         else:
             if (len(currhandles) >= 1):
                 anyerror = 1
@@ -51,7 +72,7 @@ def index():
 
 @app.route('/standings/<int:contest_id>', methods=['GET'])
 def get_standings_contents(contest_id):
-    response = requests.get('http://codeforces.com/api/contest.standings?from=1&count=20000&contestId=%s&showUnofficial=false' % contest_id)
+    response = requests.get('http://codeforces.com/api/contest.standings?from=1&count=2000&contestId=%s&showUnofficial=false' % contest_id)
     response = response.json()
     result = response["result"]
 
@@ -75,6 +96,7 @@ def get_standings_contents(contest_id):
 
         data = {
             "rank": res["rank"],
+            "ratingcss": "user user-" + getcolor(userdata[handle]["rating"]),
             "handle": handle,
             "points": res["points"],
             "country": userdata[handle]["country"],
