@@ -47,7 +47,7 @@
                         <th data-width="15">#</th>
                         <th data-width="150">Handle</th>
                         <th data-width="50">Points</th>
-                        <th data-width="50">Hacks</th>
+                        <th data-width="50" data-type="num-fmt">Hacks</th>
                         {% for prob in problems %}
                             <th data-width="15">{{prob.index}}</th>
                         {% endfor %}
@@ -62,7 +62,7 @@
                             <th>{{data.rank}}</th>
                             <th>{{data.handle}}</th>
                             <th>{{data.points|int}}</th>
-                            <th>
+                            <th data-order="{{data.successfulHackCount|int}}">
                                 <span style="color:green">
                                     +{{data.successfulHackCount|int}}
                                 </span>
@@ -73,14 +73,16 @@
                             </th>
 
                             {% for problem in data.problemResults %}
-                                <th>
-                                    {% if problem.bestSubmissionTimeSeconds is defined %}
-                                        <span style="color: #0a0">
-                                            {{problem.points|int}}
-                                        </span>
-                                        ({{(problem.bestSubmissionTimeSeconds/60)|int}})
-                                    {% endif %}
+                                {% if problem.bestSubmissionTimeSeconds is defined %}
+                                <th data-order="{{problem.points|int}}">
+                                    <span style="color: #0a0">
+                                        {{problem.points|int}}
+                                    </span>
+                                    ({{(problem.bestSubmissionTimeSeconds/60)|int}})
                                 </th>
+                                {% else %}
+                                <th></th>
+                                {% endif %}
                             {% endfor %}
 
                             <th>{{data.country}}</th>
