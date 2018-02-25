@@ -51,7 +51,7 @@ def get_user_data(userhandles, count):
                 userdata[user["handle"]] = {"country": user.get("country", 'N/A') or 'N/A',
                                             "city": user.get("city", 'N/A') or 'N/A',
                                             "organization": user.get("organization", 'N/A') or 'N/A',
-                                            "rating": user["rating"]};
+                                            "rating": user.get("rating", -1500)};
         else:
             if (len(currhandles) >= 1):
                 anyerror = 1
@@ -61,7 +61,8 @@ def get_user_data(userhandles, count):
                 userdata[currhandles[0]] = {
                     "country": 'N/A',
                     "city": 'N/A',
-                    "organization": 'N/A'
+                    "organization": 'N/A',
+                    "rating": -1500
                 };
 
     return anyerror
